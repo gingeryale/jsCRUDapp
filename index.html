@@ -3,131 +3,150 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 <!-- jQuery library -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
- <script src="contacts.js"></script> 
-
+<script src="contacts.js"></script> 
+<style>
+	.modify{background-color:#d9f5df;border:0;}
+	.cntr{display:flex;flex-direction:column;align-items:center;}
+</style>
 <body>
+  <div class="container">
+    <h2>Vanilla JS and jQuery CRUD</h2>
+    <h5>To edit table data click on relavent cell.</h5>
 
-<h2>Vanilla JS and jQuery CRUD</h2>
+    <h3>Friends Table</h3>
+    <table id="table" class="table mt-3">
+      <thead>
+        <tr>
+          <th>name</th>
+          <th>phone</th>
+          <th>email</th>
+          <th>nickname</th>
+          <th class="hideme">favorite</th>
+          <th>buttons</th>
+        </tr>
+      </thead>
+      <tbody id="appendData">
+        <!-- DATA -->
+      </tbody>
+    </table>
 
+    <div class="row cntr">
+      <h4>Add a friend</h4>
+      <form class="form-group" role="form" id="send-comment" aria-label="Add a comment">
+        <label for="name">name</label>
+        <input id="name" name="name" type="text" required="required">
+        <br />
+        <label for="email">Email</label>
+        <input id="email" name="email" type="text" required="required">
+        <br />
+        <label for="phone">Phone</label>
+        <input id="phone" name="phone" type="text" required="required">
+        <br />
+        <label for="nickname">Nickname</label>
+        <input id="nickname" name="nickname" type="text" required="required">
+        <br />
+        <label for="favorite">Favorite</label>
+        <input id="favorite" type="checkbox" name="favorite">
 
-<div role="form" id="send-comment" aria-label="Add a comment">
-  <label for="name">name</label>
-  <input id="name" name="name" type="text" required="required">
-<br />
-  <label for="email">Email</label>
-  <input id="email" name="email" type="text" required="required">
-<br />
- <label for="phone">Phone</label>
-  <input id="phone" name="phone" type="text" required="required">
-<br />
-  <label for="nickname">Nickname</label>
-  <input id="nickname" name="nickname" type="text" required="required">
-<br />
-<label for="favorite">Favorite</label>
-<input id="favorite" type="checkbox" name="favorite">
+        <br />
+        <button id="add">Add</button>
+      </form>
+    </div>
 
-<br />
- <button id="add">Add</button>
-</div>
+  </div>
 
+  <script>
+    //console.log(contacts);
 
-
-<table id="table" class="table">
-  <thead>
-    <tr>
-      <th>name</th>
-      <th>phone</th>
-      <th>email</th>
-      <th>nickname</th>
-      <th class="hideme">favorite</th>
-      <th>buttons</th>
-    </tr>
-  </thead>
-  <tbody id="appendData">
-   
-  </tbody>
-</table>
-
-
-<script>
-//console.log(contacts);
-
-function populateTable(table, data) {
-  // for every object inside data array
-  for (var el of data) {
-    // create new row
-    var row = table.insertRow();
-    // add a class name
-    row.classList.add("friendRow");
-    // for every key in the object of key value pairs
-    for (key in el) {
-      // insert new table cell
-      var cell = row.insertCell();
-      // assign text value by object key
-      var text = document.createTextNode(el[key]);
-      // append text to td cell
-      cell.appendChild(text);
+    function populateTable(table, data) {
+      // for every object inside data array
+      for (var el of data) {
+        // create new row
+        var row = table.insertRow();
+        // add a class name
+        row.classList.add("friendRow");
+        // for every key in the object of key value pairs
+        for (key in el) {
+          // insert new table cell
+          var cell = row.insertCell();
+          // assign text value by object key
+          var text = document.createTextNode(el[key]);
+          // append text to td cell
+          cell.appendChild(text);
+        }
+        // append an additional td with a button
+        row.insertCell().innerHTML=("<button>X</button>");
+      }
     }
-    // append an additional td with 2 buttons
-   row.insertCell().innerHTML=("<button>X</button>");
-  }
-}
 
 
-// select tbody of table
-let table = document.getElementById("appendData");
-// assign data contacts array value
-let data = contacts;
+    // select tbody of table
+    let table = document.getElementById("appendData");
+    // assign data contacts array value
+    let data = contacts;
 
-// fire function
-populateTable(table, data);
+    // fire function
+    populateTable(table, data);
 
-// select all DOM elements with tag nae of button
-let buttons = document.getElementsByTagName("button");
-// add a function to each button
-document.body.addEventListener("click", event => {
-    // select button by inner text value
-    if(event.target.textContent === "X"){
-      // select the closest tr to the button
-		 const tr = event.target.closest('tr');
-     // delete the tr
-		tr.remove();
-    } else{
-      // EDIT
-      // select closest td cell
-    	const td = event.target.closest('.friendRow td');
-$(td).click(function () {
-    $(td).replaceWith(function () {
-        return '<td><input type="text" id="modify" "value="' + $('#Text').val() + '" /></td>';
-    });
-})
+    // select all DOM elements with tag name of button
+    let buttons = document.getElementsByTagName("button");
+    // add a listener to click events
+    document.body.addEventListener("click", event => {
+      // check button by inner text value
+      if(event.target.textContent === "X"){
+        // select the closest tr to the button
+        const tr = event.target.closest('tr');
+        // delete tr
+        tr.remove();
+      } else{
+        // EDIT
+        // select closest td cell
+        const td = event.target.closest('.friendRow td');
+        //add jQuery click event to each td tag element in table
+        $(td).click(function () {
+          	// onclick the td inner HTML is replaced with an input field
+              $(td).replaceWith(function () {
+                    return '<td><input type="text" class="modify" value="' + $(this).text() + '" /></td>';
+                });
+            })
+           
+          }
+
+        });
+
+
+    // select form add button
+    var addBTN = document.getElementById("add");
+    // add a click function
+    addBTN.addEventListener("click", function(e){
+      // prevent page refresh on button submit form
+      e.preventDefault();
+      // select input field values and assign variable names
+      var name = $("#name").val(); 
+      var email = $("#email").val();
+      var phone = $("#phone").val();
+      var nick = $("#nickname").val();
+      var fave = $("#favorite").is(":checked") ? "true" : "false";
+      // check for empty fields and alert user to fill them
+
+      var allInputs = document.querySelectorAll("form input[type='text']");
+      console.log(allInputs);
+
+      for(let i = 0; i < allInputs.length; i++) {
+        if(allInputs[i].value.length == 0) {
+          alert("please fill all text fields");
+          return
+        }
+      }
+
+     
+         // append a table row containing form text field values
+      var new_row = '<tr class="friendRow"><td>'+name+'</td><td>'+email+'</td><td>'+phone+'</td><td>'+nick+'</td><td>'+fave+'</td><td><button>X</button></td></tr>'; 
+      // select the DOM element with ID appendData and add the newly formed table row at the end
+      $('#appendData').append(new_row);
     
- 
-    }
+     
   });
-
-
-// select form add button
-var addBTN = document.getElementById("add");
-// add a click function
-addBTN.addEventListener("click", function(e){
-  // prevent button from submitting form
-	e.preventDefault();
-// select input fields and assign var names
-var name = $("#name").val(); 
-var email = $("#email").val().trim();
-var phone = $("#phone").val().trim();
-var nick = $("#nickname").val().trim();
-var fave = $("#favorite").is(":checked") ? "true" : "false";
-// check for empty fields and do not allow them to pass
-if ($('input:text').val().length == 0)  {
-	alert("please fill all text fields")
-} else{
-  // append a table row containing form text field values
-	var new_row = '<tr class="friendRow"><td>'+name+'</td><td>'+email+'</td><td>'+phone+'</td><td>'+nick+'</td><td>'+fave+'</td><td><button>X</button></td></tr>'; 
-$('#appendData').append(new_row)
-}
-});
 
 </script>
 </body>
