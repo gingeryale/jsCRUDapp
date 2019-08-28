@@ -4,6 +4,7 @@
 <!-- jQuery library -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="contacts.js"></script> 
+
 <style>
 	.modify{background-color:#d9f5df;border:0;}
 	.cntr{display:flex;flex-direction:column;align-items:center;}
@@ -11,7 +12,7 @@
 <body>
   <div class="container">
     <h2>Vanilla JS and jQuery CRUD</h2>
-    <h5>To edit table data click on relavent cell.</h5>
+    <h5>To edit table data click on relavent cell (using minial CSS)</h5>
 
     <h3>Friends Table</h3>
     <table id="table" class="table mt-3">
@@ -104,15 +105,15 @@
         const td = event.target.closest('.friendRow td');
         //add jQuery click event to each td tag element in table
         $(td).click(function () {
-          	// onclick the td inner HTML is replaced with an input field
-              $(td).replaceWith(function () {
-                    return '<td><input type="text" class="modify" value="' + $(this).text() + '" /></td>';
-                });
-            })
-           
-          }
-
+         // onclick the td inner HTML is replaced with an input field
+         $(td).replaceWith(function () {
+          return '<td><input type="text" class="modify" value="' + $(this).text() + '" /></td>';
         });
+       })
+
+      }
+
+    });
 
 
     // select form add button
@@ -128,27 +129,22 @@
       var nick = $("#nickname").val();
       var fave = $("#favorite").is(":checked") ? "true" : "false";
       // check for empty fields and alert user to fill them
-
+      // create selector for all form text inputs
       var allInputs = document.querySelectorAll("form input[type='text']");
-      console.log(allInputs);
-
+      // iterate over each and alert for empty fields
       for(let i = 0; i < allInputs.length; i++) {
         if(allInputs[i].value.length == 0) {
           alert("please fill all text fields");
           return
         }
       }
-
-     
-         // append a table row containing form text field values
+      // append a table row containing form text field values
       var new_row = '<tr class="friendRow"><td>'+name+'</td><td>'+email+'</td><td>'+phone+'</td><td>'+nick+'</td><td>'+fave+'</td><td><button>X</button></td></tr>'; 
       // select the DOM element with ID appendData and add the newly formed table row at the end
       $('#appendData').append(new_row);
-    
-     
-  });
+    });
 
-</script>
+  </script>
 </body>
 </html>
 
