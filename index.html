@@ -8,11 +8,14 @@
 <style>
 	.modify{background-color:#d9f5df;border:0;}
 	.cntr{display:flex;flex-direction:column;align-items:center;}
+  .fave{background-color: #82a7ff;}
+  .hideme{display: none;}
 </style>
 <body>
   <div class="container">
     <h2>Vanilla JS and jQuery CRUD</h2>
-    <h5>To edit table data click on relavent cell (using minial CSS)</h5>
+    <h5>To edit table data click on relavent cell.<br/>
+    App Uses minimal CSS.</h5>
 
     <h3>Friends Table</h3>
     <table id="table" class="table mt-3">
@@ -30,7 +33,7 @@
         <!-- DATA -->
       </tbody>
     </table>
-
+  <hr style="height:1px; background:#ddd"/>
     <div class="row cntr">
       <h4>Add a friend</h4>
       <form class="form-group" role="form" id="send-comment" aria-label="Add a comment">
@@ -59,6 +62,7 @@
   <script>
     //console.log(contacts);
 
+    ///// BUILD TABLE BODY FROM EXTERNAL JS FILE /////
     function populateTable(table, data) {
       // for every object inside data array
       for (var el of data) {
@@ -70,8 +74,16 @@
         for (key in el) {
           // insert new table cell
           var cell = row.insertCell();
+          // don't display the "favorite" column to user by adding hideme CSS class
+          if(key === "favorite"){
+            cell.classList.add("hideme");
+          }
           // assign text value by object key
           var text = document.createTextNode(el[key]);
+          // if favorite highlight the row by adding additional class
+          if(el[key]=="true"){
+            row.classList.add("fave");
+          }
           // append text to td cell
           cell.appendChild(text);
         }
@@ -79,16 +91,15 @@
         row.insertCell().innerHTML=("<button>X</button>");
       }
     }
-
-
     // select tbody of table
     let table = document.getElementById("appendData");
     // assign data contacts array value
     let data = contacts;
-
     // fire function
     populateTable(table, data);
 
+
+    ///// EDIT DELETE ROWS /////
     // select all DOM elements with tag name of button
     let buttons = document.getElementsByTagName("button");
     // add a listener to click events
@@ -100,7 +111,7 @@
         // delete tr
         tr.remove();
       } else{
-        // EDIT
+        /// EDIT
         // select closest td cell
         const td = event.target.closest('.friendRow td');
         //add jQuery click event to each td tag element in table
@@ -115,7 +126,7 @@
 
     });
 
-
+    ///// FORM DATA /////
     // select form add button
     var addBTN = document.getElementById("add");
     // add a click function
@@ -127,19 +138,26 @@
       var email = $("#email").val();
       var phone = $("#phone").val();
       var nick = $("#nickname").val();
+      // assign favorite true false values based on checked status
       var fave = $("#favorite").is(":checked") ? "true" : "false";
-      // check for empty fields and alert user to fill them
       // create selector for all form text inputs
       var allInputs = document.querySelectorAll("form input[type='text']");
-      // iterate over each and alert for empty fields
+      // iterate over all text input fields and alert user to fill any that are empty
       for(let i = 0; i < allInputs.length; i++) {
-        if(allInputs[i].value.length == 0) {
+        // trim any white spaces to ensure field is populated
+        if(allInputs[i].value.trim()=="") {
           alert("please fill all text fields");
           return
         }
       }
-      // append a table row containing form text field values
+      // if fave selected highlight it
+      if(fave=="true"){
+        // append a table row containing form text field values
+      var new_row = '<tr class="friendRow fave"><td>'+name+'</td><td>'+email+'</td><td>'+phone+'</td><td>'+nick+'</td><td>'+fave+'</td><td><button>X</button></td></tr>'; 
+      }else{
+        // append a table row containing form text field values
       var new_row = '<tr class="friendRow"><td>'+name+'</td><td>'+email+'</td><td>'+phone+'</td><td>'+nick+'</td><td>'+fave+'</td><td><button>X</button></td></tr>'; 
+      }
       // select the DOM element with ID appendData and add the newly formed table row at the end
       $('#appendData').append(new_row);
     });

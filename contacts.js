@@ -4,7 +4,7 @@ var contacts = [
 	phone:"917-213-4025",
 	email:"joey@friends.com",
 	nickname:"joey",
-	favorite: "true"
+	favorite: "false"
 },
 {
 	name:"phoebee friends",
