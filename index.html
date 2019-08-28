@@ -150,13 +150,14 @@
           return
         }
       }
-      // if fave selected highlight it
+      // if fave selected highlight it.
+      // app requires that users not see favorite true/false column so it's not being added to DOM
       if(fave=="true"){
         // append a table row containing form text field values
-      var new_row = '<tr class="friendRow fave"><td>'+name+'</td><td>'+email+'</td><td>'+phone+'</td><td>'+nick+'</td><td>'+fave+'</td><td><button>X</button></td></tr>'; 
+      var new_row = '<tr class="friendRow fave"><td>'+name+'</td><td>'+email+'</td><td>'+phone+'</td><td>'+nick+'</td><td><button>X</button></td></tr>'; 
       }else{
         // append a table row containing form text field values
-      var new_row = '<tr class="friendRow"><td>'+name+'</td><td>'+email+'</td><td>'+phone+'</td><td>'+nick+'</td><td>'+fave+'</td><td><button>X</button></td></tr>'; 
+      var new_row = '<tr class="friendRow"><td>'+name+'</td><td>'+email+'</td><td>'+phone+'</td><td>'+nick+'</td><td><button>X</button></td></tr>'; 
       }
       // select the DOM element with ID appendData and add the newly formed table row at the end
       $('#appendData').append(new_row);
